@@ -1,4 +1,5 @@
 import requests
+import Logado
 import pyodbc
 from tkinter import *
 
@@ -28,7 +29,7 @@ def Validar_Texto_Vazio():
 
 def Validacao_Login():
     global mensagem_login
-    mensagem_login.destroy() #Usei para as label nao ficarem sobrepostar
+    mensagem_login.destroy() #Usei para as label nao ficarem sobrepostas
     resp = ""
     mensagem_login = Label(janela, text=resp, background="#fff", anchor=W)
     mensagem_login.pack()
@@ -41,7 +42,9 @@ def Validacao_Login():
     else:
         if usuario:
             if senha:
-                resp = "Login Efetuado"
+                janela.destroy() #Destruindo a Janela que eu estava para iniciar a janela LOGADO
+                Logado.Inicio(usuario)
+                #resp = "Login Efetuado"
             else:
                 resp = "Senha Incorreta"
         else:
@@ -53,14 +56,15 @@ def Validacao_Login():
 def Compara_Login(usuario): #Puxei do Banco de Dados todos os usuarios e comparei com o digitado
     cursor = conexao.cursor()
     return cursor.execute('SELECT * FROM Usuario WHERE usuario = ? ',
-                          usuario).fetchone() #Preciso entender o que é ferchone
+                          usuario).fetchone() #Preciso entender o que é fetchone
 
 
 def Compara_Senha(usuario, senha):#Nao sabia puxar de uma coluna especifica de maneira mais simples
-                                  #Entao usei o usuarion que ja tinha sido validado e puxei a senha dele, preciso simplificar
+                                  #Entao usei o usuario que ja tinha sido validado e puxei a senha dele, preciso simplificar
     cursor = conexao.cursor()
     return cursor.execute('SELECT * FROM Usuario WHERE usuario = ? AND senha = ? ',
                           usuario, senha).fetchone()
+
 
 Conexao_Banco_Dados()
 
@@ -86,5 +90,6 @@ entrada_senha.place(x=120, y=155)
 
 botao_login = Button(janela, text="Login", command=Validacao_Login)
 botao_login.place(x=120, y=250)
-
 janela.mainloop()
+
+
