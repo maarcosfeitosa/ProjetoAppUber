@@ -2,7 +2,9 @@ import requests
 import pyodbc
 from tkinter import *
 
-def Conexao_Banco_Dados():
+
+def Conexao_Banco_Dados(): #Conexão com SQL Server que esta no meu Computador
+    global conexao
     dados_conexao = (
         "Driver={SQL Server};"
         "Server=DESKTOP-8J8RVEB\SQLEXPRESS;"
@@ -16,50 +18,54 @@ def Validar_Texto_Vazio():
     senha = entrada_senha.get()
     vazio = True
     if not login:
-        print("login vazio")
-
+        vazio = True
     elif not senha:
-        print("senha vazia")
-
+        vazio = True
     else:
         vazio = False
-
     return vazio
+
 
 def Validacao_Login():
     global mensagem_login
-    mensagem_login.destroy()
-    usuario = "maarcosfeitosa"
-    senha = "123456"
+    mensagem_login.destroy() #Usei para as label nao ficarem sobrepostar
     resp = ""
     mensagem_login = Label(janela, text=resp, background="#fff", anchor=W)
     mensagem_login.pack()
     mensagem_login.place(x=70, y=190)
-
-
+    usuario = Compara_Login(entrada_login.get())
+    senha = Compara_Senha(entrada_login.get(), entrada_senha.get())
 
     if Validar_Texto_Vazio():
         resp = "Insira os Dados"
-        mensagem_login.config(text=resp)
-
     else:
-        if entrada_login.get() == usuario:
-            if entrada_senha.get() == senha:
+        if usuario:
+            if senha:
                 resp = "Login Efetuado"
             else:
                 resp = "Senha Incorreta"
-
         else:
-
             resp = "Usuario Incorreto"
 
-    mensagem_login.config(text=resp)
+    mensagem_login.config(text=resp) #Receberei a resposta dos If e colocarei aqui qual foi
 
 
+def Compara_Login(usuario): #Puxei do Banco de Dados todos os usuarios e comparei com o digitado
+    cursor = conexao.cursor()
+    return cursor.execute('SELECT * FROM Usuario WHERE usuario = ? ',
+                          usuario).fetchone() #Preciso entender o que é ferchone
 
 
+def Compara_Senha(usuario, senha):#Nao sabia puxar de uma coluna especifica de maneira mais simples
+                                  #Entao usei o usuarion que ja tinha sido validado e puxei a senha dele, preciso simplificar
+    cursor = conexao.cursor()
+    return cursor.execute('SELECT * FROM Usuario WHERE usuario = ? AND senha = ? ',
+                          usuario, senha).fetchone()
 
+Conexao_Banco_Dados()
 
+global cursor
+cursor = conexao.cursor()
 
 janela = Tk()
 janela.title("Ganhos Uber")
