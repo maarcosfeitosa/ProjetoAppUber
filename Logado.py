@@ -1,7 +1,10 @@
 import requests
 import pyodbc
+from datetime import datetime
+import locale
 from tkinter import *
 
+locale.setlocale(locale.LC_ALL, 'pt_BR')
 """class Testando():
     def __int__(self,usuario):
         self.usuario = usuario
@@ -43,6 +46,39 @@ def Conexao_Banco_Dados(): #Conexão com SQL Server que esta no meu Computador
     )
     conexao = pyodbc.connect(dados_conexao)
 
+def Validar_Os_Dados_Inseridos(id_user, data, valor, km, consumo):
+    Validar_Data(id_user, data)
+
+def Validar_Data(id_user, data):
+    global mensagem_data
+    mensagem_data.destroy()
+    resp = ""
+    mensagem_data = Label(janela, text=resp, fg="Red", font=("Arial", 8), anchor=W)
+    mensagem_data.pack()
+    mensagem_data.place(x=245, y=150)
+    data_valida = False
+    try:
+        datetime.strptime(data, '%d/%m/%Y')
+    except ValueError:
+        resp = "Data Inválida"
+        mensagem_data = Label(janela, text=resp, fg="Red", font=("Arial", 8), anchor=W)
+        mensagem_data.pack()
+        mensagem_data.place(x=245, y=150)
+        return None
+    else:
+        resp = "aiskdjnasijdjasidiasoijda"
+        mensagem_data = Label(janela, text=resp, fg="Red", font=("Arial", 8), anchor=W)
+        mensagem_data.pack()
+        mensagem_data.place(x=245, y=150)
+        data_datetime = datetime.strptime(data, '%d/%m/%Y')
+        data_valida = True
+        return datetime.strftime(data_datetime, '%d de %B de %Y')
+
+    """if data_valida:
+        cursor = conexao.cursor()
+        comdando ="""
+
+
 def Confirmar_Incersao(id_user, data, valor, km, consumo):
     print(id_user)
     print(data)
@@ -76,13 +112,11 @@ def Inserir_Dados():
     Label(janela, text="Km", background="#fff", anchor=W).place(x=50, y=200)
     Label(janela, text="Consumo", background="#fff", anchor=W).place(x=50, y=225)
 
-    botao_confirmar_dados = Button(janela, text="Confirmar", command=lambda: Confirmar_Incersao(usuario[0], entrada_data.get(),entrada_valor.get(),entrada_km_rodado.get(),entrada_consumo.get()))
+    botao_confirmar_dados = Button(janela, text="Confirmar", command=lambda: Validar_Os_Dados_Inseridos(usuario[0], entrada_data.get(),entrada_valor.get(),entrada_km_rodado.get(),entrada_consumo.get()))
     #Esse Lambda foi como consegui enviar parametros para minha funcao, ainda preciso entender o que realmente significa
     botao_confirmar_dados.place(x=70, y=250)
 
 def Inicio(user):
-
-
     #Criei tudo global pq senao nao conseguia usar nos outros def, e se eu deixasse solto quando puxava
     #da outra pagina ele ja iniciava o codigo todoo mesmo sem configurar
     #preciso entender se o import ja executa o programa
@@ -113,3 +147,4 @@ def Inicio(user):
     janela.mainloop()
 
 
+global mensagem_data
