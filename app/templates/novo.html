@@ -1,0 +1,33 @@
+{% extends "template.html" %}
+{% block conteudo %}
+      <form class="Inserindo_Ganhos" action="{{ url_for('criar') }}" method="post" enctype="multipart/form-data">
+
+        <fieldset>
+          {{ form.csrf_token() }}
+          <div class="form-group inputBox">
+            {{ form.data_ganho.label(class="form-label") }}
+            {{ form.data_ganho(class="form-control") }}
+          </div>
+          <div class="form-group inputBox">
+            {{ form.ganhos.label(class="form-label") }}
+            {{ form.ganhos(class="form-control") }}
+          </div>
+          <div class="form-group inputBox">
+            {{ form.km.label(class="form-label") }}
+            {{ form.km(class="form-control") }}
+          </div>
+          <div class="form-group inputBox">
+            {{ form.consumo.label(class="form-label") }}
+            {{ form.consumo(class="form-control") }}
+          </div>
+          <div class="form-group inputBox">
+            {{ form.combustivel.label(class="form-label") }}
+            {{ form.combustivel(class="form-control") }}
+          </div>
+          <div class="form-group buttons">
+            {{ form.salvar(class="btn btn-primary") }}
+            <a class="btn btn-danger" href="{{ url_for('index') }}">Voltar</a>
+          </div>
+        </fieldset>
+      </form>
+{% endblock %}

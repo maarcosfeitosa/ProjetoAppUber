@@ -1,0 +1,40 @@
+{% extends "template.html" %}
+{% block conteudo %}
+
+        <table class="table table-striped table-responsive table-bordered">
+            <thead class="thead-default">
+                
+                <a class="btn btn-primary" href="{{ url_for('login') }}">Login</a>
+                <a class="btn btn-danger" href="{{ url_for('logout') }}">Logout</a>
+                <a class="btn btn-primary" href="{{ url_for('novo') }}">Inserir Ganhos</a>
+
+
+                <tr>
+                    <th>Data</th>
+                    <th>Ganhos</th>
+                    <th>Km</th>
+                    <th>Consumo</th>
+                    <th>Gasolina</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ganho in ganhos %}
+                <tr>
+                    <td>{{ ganho.data }}</td>
+                    <td>{{ ganho.ganhos }}</td>
+                    <td>{{ ganho.km }}</td>
+                    <td>{{ ganho.consumo }}</td>
+                    <td>{{ ganho.combustivel }}</td>
+                    <td>
+                    <a href="{{ url_for('editar', data_ganho = ganho.data) }}">Editar</a>
+                    <a href="{{ url_for('deletar', data_ganho = ganho.data) }}">Deletar</a>
+                    </td>
+                    
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+            
+        </table>
+{% endblock %}

@@ -1,8 +1,11 @@
 import locale
 from datetime import datetime
-
+import mysql.connector
+from mysql.connector import errorcode
+from flask_bcrypt import generate_password_hash
 import pyodbc
-
+from flask import Flask, render_template
+import locale
 """"
 def select_db(teste, password):
     return cursor.execute('SELECT usuario FROM Usuario WHERE usuario = ? AND senha = ?',
@@ -32,7 +35,7 @@ for i in cursor:
     print(i)
 
 print("Conexao Efetuada")
-"""
+
 locale.setlocale(locale.LC_ALL, 'pt_BR')
 
 
@@ -58,3 +61,18 @@ data_extenso = retorna_data_extenso(data)
 
 if data_extenso is not None:
     print(data_extenso)
+"""
+"""<figure class="img thumbnail col-md-4 formularioImagem">
+          <img class="img-fluid" src="{{ url_for('imagem', nome_arquivo='capa_padrao.jpg') }}">
+          <figcaption>
+            <label class="fileContainer">
+              Mudar Capa
+              <input type="file" name="arquivo" accept=".jpg">
+            </label>
+          </figcaption>
+        </figure>
+        
+        
+
+
+                        ""
