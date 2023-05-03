@@ -3,8 +3,9 @@ from jogoteca import app, db
 from moldels import Ganhos, Verifica_Nulo
 from helpers import FormularioGanhos
 import time
-from datetime import datetime
+from datetime import *
 import locale
+from sqlalchemy import extract
 
 
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
@@ -25,14 +26,13 @@ def novo():
 def criar():
     form = FormularioGanhos(request.form)
 
-    if not form.validate_on_submit():
-        return redirect(url_for('novo'))
-
     data = form.data_ganho.data
     ganhos = form.ganhos.data
     km = form.km.data
     consumo = form.consumo.data
     combustivel = form.combustivel.data
+
+    verifica = Verifica_Nulo(km, consumo, combustivel)
 
     ganho = Ganhos.query.filter_by(data=data).first()
 
@@ -40,23 +40,15 @@ def criar():
         flash('Data já existente!')
         return redirect(url_for('index'))
 
-    novo_ganho = Ganhos(data=data, ganhos=ganhos, km=km, consumo=consumo, combustivel=combustivel)
+    novo_ganho = Ganhos(data=data, ganhos=ganhos, km=verifica.km, consumo=verifica.consumo, combustivel=verifica.combustivel)
     db.session.add(novo_ganho)
     db.session.commit()
-
-    """arquivo = request.files['arquivo']
-    upload_path = app.config['UPLOAD_PATH']
-    timestamp = time.time()
-    arquivo.save(f'{upload_path}/capa{novo_ganho.data}-{timestamp}.jpg')"""
 
     return redirect(url_for('index'))
 
 @app.route('/editar/<data_ganho>')
 def editar(data_ganho):
     
-
-    """data = datetime.datetime.strptime(data, '%d-%m-%Y').strftime('%d/%m/%Y')
-    return render_template('editar.html', data=data)"""
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         return redirect(url_for('login', proxima=url_for('editar', data_ganho=data_ganho)))
     ganho = Ganhos.query.filter_by(data=data_ganho).first()
@@ -98,8 +90,20 @@ def deletar(data_ganho):
 
     Ganhos.query.filter_by(data=data_ganho).delete()
     db.session.commit()
-    flash('Data deletado com sucesso!')
+    flash('Data deletada com sucesso!')
 
     return redirect(url_for('index'))
 
+@app.route('/ganhos_mensais/<data_mostra>')
+def ganhos_mensais(data_mostra):
+    if data_mostra == None:
+        data_mostra = datetime.month
+        ganhos = Ganhos.query.filter_by(data=data_mostra.date.month).all()
+        return render_template('lista_separada.html', ganhos=ganhos)
+   
+    ganhos = Ganhos.query.filter(extract('month', Ganhos.data)==5).all()
+    
+    return render_template('lista_separada.html', ganhos=ganhos)
 
+
+    

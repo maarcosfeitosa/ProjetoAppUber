@@ -7,6 +7,8 @@
                 <a class="btn btn-primary" href="{{ url_for('login') }}">Login</a>
                 <a class="btn btn-danger" href="{{ url_for('logout') }}">Logout</a>
                 <a class="btn btn-primary" href="{{ url_for('novo') }}">Inserir Ganhos</a>
+                <a class="btn btn-primary" href="{{ url_for('ganhos_mensais', data_mostra = '2023-05-04') }}">Mostrar Ganhos</a>
+
 
 
                 <tr>
@@ -21,7 +23,7 @@
             <tbody>
                 {% for ganho in ganhos %}
                 <tr>
-                    <td>{{ ganho.data }}</td>
+                    <td>{{ ganho.data.strftime('%d/%m/%Y') }}</td>
                     <td>{{ ganho.ganhos }}</td>
                     <td>{{ ganho.km }}</td>
                     <td>{{ ganho.consumo }}</td>

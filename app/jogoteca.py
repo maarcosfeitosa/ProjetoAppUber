@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 csrf = CSRFProtect(app)
 bcrypt = Bcrypt(app)
 
-from views_game import *
+from views_ganhos import *
 from views_user import *
 
 if __name__ == '__main__': 

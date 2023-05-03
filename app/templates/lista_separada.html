@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Ganhos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    
+</head>
+<body>
+    <header>
+
+    </header>    
+    <main>
+        <select name="Selecione o Mês">
+            <option value="01">Janeiro</option>
+            <option value="02">Favereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+            </select>
+            <table>
+                <tbody>
+                    {% for ganho in ganhos %}
+                        <tr>
+                            <td>{{ ganho.data }}</td>
+                            <td>{{ ganho.ganhos }}</td>
+                            <td>{{ ganho.km }}</td>
+                            <td>{{ ganho.consumo }}</td>
+                            <td>{{ ganho.combustivel }}</td>
+                            <td>
+                            <a href="{{ url_for('editar', data_ganho = ganhos.data) }}">Editar</a>
+                            <a href="{{ url_for('deletar', data_ganho = ganhos.data) }}">Deletar</a>
+                            </td>
+                            
+                        </tr>
+                    
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>

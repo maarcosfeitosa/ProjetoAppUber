@@ -1,5 +1,6 @@
 from jogoteca import db
 from datetime import datetime
+from sqlalchemy import extract
 
 class Ganhos(db.Model):
     data = db.Column(db.Date, primary_key=True, nullable=False)
